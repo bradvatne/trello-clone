@@ -1,14 +1,21 @@
 import { AddNewItem } from "./AddNewItem";
 import { Column } from "./Column";
 import { AppContainer, ColumnContainer } from "./styles";
+import { useAppState } from "./state/AppStateContext";
+import { addList } from "./state/actions";
+import { CustomDragLayer } from "./CustomDragLayer";
 
 export const App = () => {
+  const { lists, dispatch } = useAppState();
   return (
     <AppContainer>
-      <Column text="Todo: " />
+      <CustomDragLayer />
+      {lists.map((list) => (
+        <Column text={list.text} key={list.id} id={list.id} />
+      ))}
       <AddNewItem
-        toggleButtonText="+Add Another List"
-        onAdd={() => console.log("Item Created" )}
+        toggleButtonText="+ Add Another Card"
+        onAdd={(text) => dispatch(addList(text))}
       />
     </AppContainer>
   );

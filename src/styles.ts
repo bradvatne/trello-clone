@@ -10,22 +10,26 @@ export const AppContainer = styled.div`
   width: 100%;
 `;
 
-export const ColumnContainer = styled.div`
-  background-color: #ebecf0;
-  width: 300px;
-  min-height: 40px;
-  margin-right: 20px;
-  border-radius: 3px;
-  padding: 8px 8px;
-  flex-grow: 0;
-`;
-
 export const ColumnTitle = styled.div`
   padding: 6px 16px 12px;
   font-weight: bold;
 `;
 
-export const CardContainer = styled.div`
+interface DragPreviewContainerProps {
+  isHidden?: boolean;
+  isPreview?: boolean;
+}
+
+export const DragPreviewContainer = styled.div<DragPreviewContainerProps>`
+  transform: ${(props) => (props.isPreview ? "rotate(5deg)" : undefined)};
+  opacity: ${(props) => (props.isHidden ? 0 : 1)};
+`;
+
+type AddItemButtonProps = {
+  dark?: boolean;
+};
+
+export const CardContainer = styled(DragPreviewContainer)`
   background-color: #fff;
   cursor: pointer;
   marign-bottom: 0.5rem;
@@ -34,10 +38,6 @@ export const CardContainer = styled.div`
   border-radius: 3px;
   box-shadow: #091e4240 0px 1px 0px 0px;
 `;
-
-type AddItemButtonProps = {
-  dark?: boolean;
-};
 
 export const AddItemButton = styled.button<AddItemButtonProps>`
   background-color: #ffffff3d;
@@ -51,8 +51,18 @@ export const AddItemButton = styled.button<AddItemButtonProps>`
   transition: background 85ms ease-in;
   width: 100%;
   &:hover {
-    background-color: #ffffff52;
+    background-color: #ffffff;
   }
+`;
+
+export const ColumnContainer = styled(DragPreviewContainer)`
+  background-color: #ebecf0;
+  width: 300px;
+  min-height: 40px;
+  margin-right: 20px;
+  border-radius: 3px;
+  padding: 8px 8px;
+  flex-grow: 0;
 `;
 
 export const NewItemFormContainer = styled.div`
@@ -64,7 +74,7 @@ export const NewItemFormContainer = styled.div`
 `;
 
 export const NewItemButton = styled.button`
-  background-color: 3px;
+  background-color: green;
   border: none;
   box-shadow: none;
   color: #fff;
@@ -80,3 +90,28 @@ export const NewItemInput = styled.input`
   padding: 0.5rem 1rem;
   width: 100%;
 `;
+
+export const CustomDragLayerContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+`;
+
+type DragPreviewWrapperProps = {
+  position: {
+    x: number;
+    y: number;
+  };
+};
+
+export const DragPreviewWrapper = styled.div.attrs<DragPreviewWrapperProps>(
+  ({ position: { x, y } }) => ({
+    style: {
+      transform: `translate(${x}px, ${y}px)`,
+    },
+  })
+)<DragPreviewWrapperProps>``;
